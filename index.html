@@ -2,13 +2,18 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>오늘 점심 뭐 먹지?</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.x/dist/tabler-icons.min.css">
 </head>
 <body>
 
 <style>
+  /* 상단 safe area 없애기 */
+  :root { --sat: env(safe-area-inset-top); }
+  * { -webkit-tap-highlight-color: transparent; }
+  html { background: #F2F2F7; }
+
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,'SF Pro Text',Helvetica,sans-serif;background:#F2F2F7;}
 html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#F2F2F7;}
@@ -499,6 +504,17 @@ function openMap(idx){
 const mainEl=document.getElementById('v-main');
 mainEl.style.display='flex'; mainEl.style.flexDirection='column';
 drawRoulette();
+</script>
+
+
+<script>
+// 모바일 브라우저 주소창 대응 - 실제 화면 높이 적용
+function setVH() {
+  document.querySelector('.screen').style.height = window.innerHeight + 'px';
+}
+setVH();
+window.addEventListener('resize', setVH);
+window.addEventListener('orientationchange', function(){ setTimeout(setVH, 200); });
 </script>
 
 </body>
