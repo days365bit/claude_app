@@ -1,10 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>오늘 점심 뭐 먹지?</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.x/dist/tabler-icons.min.css">
+</head>
+<body>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,'SF Pro Text',Helvetica,sans-serif;}
-.wrap{display:flex;justify-content:center;padding:1.5rem 0 2rem;}
-.device{width:320px;background:#000;border-radius:48px;padding:3px;}
-.screen{background:#F2F2F7;border-radius:46px;overflow:hidden;min-height:700px;display:flex;flex-direction:column;position:relative;}
+html,body{height:100%;margin:0;padding:0;}
+.wrap{display:block;width:100%;height:100%;}
+.device{width:100%;height:100%;background:transparent;border-radius:0;padding:0;}
+.screen{background:#F2F2F7;border-radius:0;overflow:hidden;height:100vh;min-height:0;display:flex;flex-direction:column;position:relative;}
 .dyn{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:88px;height:28px;background:#000;border-radius:20px;z-index:99;}
 .sbar{height:52px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 22px 8px;background:#F2F2F7;flex-shrink:0;}
 .stime{font-size:15px;font-weight:600;color:#000;}
@@ -107,10 +117,6 @@ body{font-family:-apple-system,'SF Pro Text',Helvetica,sans-serif;}
 </style>
 
 <div class="wrap"><div class="device"><div class="screen">
-  <div class="dyn"></div>
-  <div class="sbar">
-    <span class="stime">12:00</span>
-    <div class="sicons"><i class="ti ti-wifi" aria-hidden="true"></i><i class="ti ti-battery" aria-hidden="true"></i></div>
   </div>
 
   <!-- ── 메인: 통계 + 룰렛 ── -->
@@ -494,3 +500,6 @@ const mainEl=document.getElementById('v-main');
 mainEl.style.display='flex'; mainEl.style.flexDirection='column';
 drawRoulette();
 </script>
+
+</body>
+</html>
