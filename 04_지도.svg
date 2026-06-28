@@ -1,0 +1,53 @@
+<svg width="320" height="700" viewBox="0 0 320 700"
+  xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, Helvetica, sans-serif">
+  <defs><clipPath id="scmap"><rect width="320" height="700" rx="46"/></clipPath></defs>
+  <rect width="320" height="700" rx="48" fill="#000"/>
+  <rect x="3" y="3" width="314" height="694" rx="46" fill="#F2F2F7" clip-path="url(#scmap)"/>
+  <rect x="116" y="13" width="88" height="28" rx="14" fill="#000"/>
+  <text x="22" y="55" font-size="15" font-weight="600" fill="#000">12:00</text>
+  <text x="266" y="55" font-size="13" fill="#000">▲ ▌</text>
+  <rect x="3" y="68" width="314" height="44" fill="#F2F2F7"/>
+<line x1="3" y1="111.5" x2="317" y2="111.5" stroke="#E5E5EA" stroke-width=".5"/>
+<text x="160" y="94" font-size="16" font-weight="600" fill="#000" text-anchor="middle">한솥도시락 역삼</text>
+<text x="20" y="95" font-size="20" fill="#FF6B35">‹</text>
+<text x="36" y="95" font-size="15" fill="#FF6B35">맛집</text>
+<rect x="16" y="120" width="288" height="190" rx="16" fill="#E8F4FD"/>
+<line x1="16" y1="178" x2="304" y2="188" stroke="#FFFFFF" stroke-width="12"/>
+<line x1="16" y1="238" x2="304" y2="232" stroke="#FFFFFF" stroke-width="10"/>
+<line x1="84" y1="120" x2="94" y2="310" stroke="#FFFFFF" stroke-width="10"/>
+<line x1="176" y1="120" x2="171" y2="310" stroke="#FFFFFF" stroke-width="10"/>
+<line x1="252" y1="120" x2="256" y2="310" stroke="#FFFFFF" stroke-width="10"/>
+<rect x="20" y="124" width="58" height="48" rx="3" fill="#C8D8E8"/>
+<rect x="104" y="124" width="64" height="50" rx="3" fill="#C8D8E8"/>
+<rect x="194" y="124" width="44" height="52" rx="3" fill="#C8D8E8"/>
+<rect x="266" y="124" width="46" height="50" rx="3" fill="#C8D8E8"/>
+<rect x="20" y="196" width="58" height="34" rx="3" fill="#C8D8E8"/>
+<rect x="104" y="194" width="64" height="30" rx="3" fill="#C8D8E8"/>
+<rect x="194" y="196" width="44" height="30" rx="3" fill="#C8D8E8"/>
+<rect x="266" y="196" width="46" height="30" rx="3" fill="#C8D8E8"/>
+<rect x="20" y="242" width="58" height="62" rx="3" fill="#C8D8E8"/>
+<rect x="104" y="240" width="64" height="64" rx="3" fill="#C8D8E8"/>
+<rect x="194" y="242" width="44" height="62" rx="3" fill="#C8D8E8"/>
+<rect x="266" y="242" width="46" height="62" rx="3" fill="#C8D8E8"/>
+<circle cx="160" cy="215" r="6" fill="#34C759"/>
+<circle cx="160" cy="215" r="3" fill="#FFFFFF"/>
+<circle cx="104" cy="210" r="14" fill="#FF6B35" opacity=".25"/>
+<circle cx="104" cy="210" r="8" fill="#FF6B35"/>
+<circle cx="104" cy="210" r="4" fill="#FFFFFF"/>
+<text x="104" y="192" font-size="11" font-weight="600" fill="#FF6B35" text-anchor="middle">한솥</text>
+<rect x="16" y="322" width="288" height="120" rx="14" fill="#FFFFFF"/>
+<text x="28" y="346" font-size="16" font-weight="700" fill="#000">한솥도시락 역삼점</text>
+<text x="28" y="364" font-size="12" fill="#8E8E93">강남구 역삼동 123-4</text>
+<rect x="28" y="376" width="52" height="26" rx="13" fill="#E5E5EA"/>
+<text x="54" y="393" font-size="11" font-weight="500" fill="#3C3C43" text-anchor="middle">★ 4.2</text>
+<rect x="88" y="376" width="60" height="26" rx="13" fill="#E5E5EA"/>
+<text x="118" y="393" font-size="11" font-weight="500" fill="#3C3C43" text-anchor="middle">도보 3분</text>
+<rect x="156" y="376" width="64" height="26" rx="13" fill="#E5E5EA"/>
+<text x="188" y="393" font-size="11" font-weight="500" fill="#3C3C43" text-anchor="middle">대기 즉시</text>
+<rect x="28" y="412" width="120" height="22" rx="7" fill="#FFFFFF" stroke="#E5E5EA" stroke-width="1"/>
+<text x="88" y="427" font-size="11" fill="#000" text-anchor="middle">📞 전화하기</text>
+<rect x="156" y="412" width="120" height="22" rx="7" fill="#FFFFFF" stroke="#E5E5EA" stroke-width="1"/>
+<text x="216" y="427" font-size="11" fill="#000" text-anchor="middle">↗ 공유하기</text>
+<rect x="16" y="454" width="288" height="42" rx="12" fill="#FF6B35"/>
+<text x="160" y="480" font-size="15" font-weight="600" fill="#FFFFFF" text-anchor="middle">길 안내</text>
+</svg>
