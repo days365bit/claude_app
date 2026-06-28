@@ -1,0 +1,496 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,'SF Pro Text',Helvetica,sans-serif;}
+.wrap{display:flex;justify-content:center;padding:1.5rem 0 2rem;}
+.device{width:320px;background:#000;border-radius:48px;padding:3px;}
+.screen{background:#F2F2F7;border-radius:46px;overflow:hidden;min-height:700px;display:flex;flex-direction:column;position:relative;}
+.dyn{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:88px;height:28px;background:#000;border-radius:20px;z-index:99;}
+.sbar{height:52px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 22px 8px;background:#F2F2F7;flex-shrink:0;}
+.stime{font-size:15px;font-weight:600;color:#000;}
+.sicons{display:flex;gap:5px;font-size:14px;color:#000;}
+.nav-hdr{height:44px;display:flex;align-items:center;padding:0 16px;background:#F2F2F7;border-bottom:.5px solid #E5E5EA;flex-shrink:0;position:relative;}
+.nav-back{display:flex;align-items:center;gap:2px;color:#FF6B35;font-size:15px;border:none;background:transparent;cursor:pointer;font-family:inherit;padding:4px 0;z-index:1;}
+.nav-back i{font-size:20px;}
+.nav-back:active{opacity:.6;}
+.nav-center{position:absolute;left:0;right:0;text-align:center;font-size:16px;font-weight:600;color:#000;pointer-events:none;}
+.sarea{flex:1;overflow-y:auto;padding-bottom:16px;}
+.sarea::-webkit-scrollbar{display:none;}
+.slide-left{animation:slideL .28s cubic-bezier(.32,.72,0,1) both;}
+.slide-right{animation:slideR .28s cubic-bezier(.32,.72,0,1) both;}
+@keyframes slideL{from{transform:translateX(48px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+@keyframes slideR{from{transform:translateX(-48px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+
+/* 메인 */
+.main-header{padding:16px 20px 10px;}
+.main-title{font-size:22px;font-weight:700;color:#000;letter-spacing:-.4px;}
+.main-sub{font-size:13px;color:#8E8E93;margin-top:2px;}
+.participant-card{margin:0 16px 12px;background:#fff;border-radius:16px;padding:16px;}
+.p-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.p-count{font-size:28px;font-weight:700;color:#FF6B35;letter-spacing:-.5px;}
+.p-label{font-size:13px;color:#8E8E93;margin-top:2px;}
+.btn-join{height:44px;border-radius:12px;border:none;background:#FF6B35;color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;padding:0 20px;transition:background .15s;display:flex;align-items:center;gap:6px;}
+.btn-join:active{background:#E55A25;}
+.btn-reset{width:100%;height:34px;border-radius:9px;border:1px solid #E5E5EA;background:transparent;color:#8E8E93;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:4px;margin-top:0;}
+.btn-reset:active{background:#F2F2F7;}
+
+/* 통계 바 */
+.stat-card{margin:0 16px 12px;background:#fff;border-radius:16px;padding:14px;}
+.stat-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.stat-hdr-title{font-size:13px;font-weight:600;color:#000;}
+.stat-hdr-sub{font-size:11px;color:#8E8E93;}
+.stat-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.stat-row:last-child{margin-bottom:0;}
+.s-emoji{font-size:16px;width:22px;text-align:center;flex-shrink:0;}
+.s-name{font-size:12px;color:#3C3C43;width:38px;flex-shrink:0;font-weight:500;}
+.s-track{flex:1;height:22px;background:#F2F2F7;border-radius:6px;overflow:hidden;}
+.s-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:8px;transition:width .4s cubic-bezier(.32,.72,0,1);}
+.s-fill span{font-size:11px;font-weight:700;color:#fff;}
+.s-n{font-size:12px;font-weight:600;color:#3C3C43;width:18px;text-align:right;flex-shrink:0;}
+.empty-stat{text-align:center;padding:20px 0;color:#C7C7CC;font-size:13px;}
+
+/* 룰렛 */
+.roulette-card{margin:0 16px 14px;background:#fff;border-radius:16px;padding:14px;text-align:center;}
+.r-label{font-size:13px;font-weight:600;color:#000;margin-bottom:10px;text-align:left;}
+.canvas-box{position:relative;width:180px;margin:0 auto 10px;}
+.ptr{position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:16px solid #FF6B35;}
+.r-result{font-size:14px;font-weight:700;color:#000;min-height:20px;margin-bottom:8px;}
+.btn-spin{width:100%;height:40px;border-radius:11px;border:none;background:#FF6B35;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s;}
+.btn-spin:active{background:#E55A25;}
+.btn-spin:disabled{background:#FFB899;cursor:default;}
+.btn-see-rest{width:100%;height:36px;border-radius:10px;border:none;background:#FFF0EB;color:#C73E00;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:7px;display:none;}
+.btn-see-rest.show{display:block;}
+
+/* 음식 선택 화면 */
+.food-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:0 16px 12px;}
+.food-card{background:#fff;border-radius:14px;padding:14px 10px 12px;cursor:pointer;border:2px solid #E5E5EA;text-align:center;position:relative;user-select:none;transition:all .12s;}
+.food-card:active{transform:scale(.96);}
+.food-card.selected{border-color:#FF6B35;background:#FFF8F5;}
+.f-emoji{font-size:30px;margin-bottom:6px;}
+.f-name{font-size:13px;font-weight:600;color:#000;}
+.f-sub{font-size:10px;color:#8E8E93;margin-top:2px;}
+.ck{position:absolute;top:8px;right:8px;width:18px;height:18px;border-radius:9px;border:1.5px solid #C7C7CC;background:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;color:transparent;transition:all .12s;}
+.food-card.selected .ck{background:#FF6B35;border-color:#FF6B35;color:#fff;}
+.confirm-wrap{padding:0 16px;}
+.btn-confirm{width:100%;height:44px;border-radius:12px;border:none;background:#FF6B35;color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s;}
+.btn-confirm:active{background:#E55A25;}
+.btn-confirm:disabled{background:#FFB899;cursor:default;}
+
+/* 맛집 */
+.rest-list{padding:0 16px;}
+.rest-card{background:#fff;border-radius:14px;padding:12px;margin-bottom:9px;cursor:pointer;display:flex;align-items:center;gap:11px;transition:background .12s;}
+.rest-card:active{background:#FFF8F5;}
+.rest-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.rest-info{flex:1;min-width:0;}
+.rest-name{font-size:14px;font-weight:600;color:#000;}
+.rest-cat{font-size:11px;color:#8E8E93;margin-bottom:3px;}
+.rest-meta{display:flex;align-items:center;gap:7px;}
+.rest-rating{font-size:12px;font-weight:600;color:#FF9F0A;}
+.rest-dist{font-size:11px;color:#8E8E93;}
+.rest-wait{font-size:10px;background:#E5E5EA;color:#3C3C43;padding:2px 5px;border-radius:4px;font-weight:500;}
+.rec-badge{font-size:10px;background:#FFF0EB;color:#C73E00;padding:2px 6px;border-radius:4px;font-weight:600;margin-left:4px;}
+.r-banner{margin:0 16px 10px;background:#FFF8F5;border-radius:14px;padding:11px 14px;display:none;align-items:center;gap:10px;}
+.r-banner.show{display:flex;}
+.rb-emoji{font-size:24px;}.rb-text{flex:1;}
+.rb-label{font-size:10px;color:#C73E00;font-weight:600;margin-bottom:1px;}
+.rb-name{font-size:14px;font-weight:700;color:#000;}
+.rb-reset{font-size:11px;color:#8E8E93;cursor:pointer;text-decoration:underline;white-space:nowrap;}
+
+/* 지도 */
+.map-area{margin:0 16px 10px;background:#E8F4FD;border-radius:16px;height:188px;overflow:hidden;}
+.map-info-card{margin:0 16px;background:#fff;border-radius:14px;padding:13px;}
+.map-info-name{font-size:16px;font-weight:700;color:#000;margin-bottom:3px;}
+.map-info-addr{font-size:12px;color:#8E8E93;margin-bottom:9px;}
+.map-info-row{display:flex;gap:8px;}
+.map-pill{display:flex;align-items:center;gap:4px;background:#F2F2F7;border-radius:20px;padding:5px 10px;font-size:11px;font-weight:500;color:#3C3C43;}
+.btn-navi{width:calc(100% - 32px);margin:10px 16px 0;height:42px;border-radius:12px;border:none;background:#FF6B35;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:5px;}
+</style>
+
+<div class="wrap"><div class="device"><div class="screen">
+  <div class="dyn"></div>
+  <div class="sbar">
+    <span class="stime">12:00</span>
+    <div class="sicons"><i class="ti ti-wifi" aria-hidden="true"></i><i class="ti ti-battery" aria-hidden="true"></i></div>
+  </div>
+
+  <!-- ── 메인: 통계 + 룰렛 ── -->
+  <div id="v-main" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
+    <div class="nav-hdr">
+      <button class="nav-back" style="visibility:hidden;"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
+      <div class="nav-center">오늘 점심 뭐 먹지?</div>
+    </div>
+    <div class="sarea">
+      <div class="main-header">
+        <div class="main-sub">버튼을 눌러 음식을 선택해요</div>
+      </div>
+
+      <!-- 참여 카드 -->
+      <div class="participant-card">
+        <div class="p-row">
+          <div>
+            <div class="p-count"><span id="p-num">0</span>명</div>
+            <div class="p-label">참여 완료</div>
+          </div>
+          <button class="btn-join" onclick="startVote()">
+            <i class="ti ti-plus" aria-hidden="true"></i>참여하기
+          </button>
+        </div>
+        <button class="btn-reset" onclick="resetAll()">
+          <i class="ti ti-refresh" style="font-size:13px;" aria-hidden="true"></i>초기화
+        </button>
+      </div>
+
+      <!-- 통계 -->
+      <div class="stat-card">
+        <div class="stat-hdr">
+          <span class="stat-hdr-title">투표 현황</span>
+          <span class="stat-hdr-sub" id="stat-hdr-sub">아직 투표 없음</span>
+        </div>
+        <div id="stat-bars">
+          <div class="empty-stat">참여하기를 눌러 투표를 시작하세요</div>
+        </div>
+      </div>
+
+      <!-- 룰렛 -->
+      <div class="roulette-card">
+        <div class="r-label">룰렛으로 결정하기</div>
+        <div class="canvas-box">
+          <canvas id="roulette" width="180" height="180" role="img" aria-label="음식 룰렛">음식 선택 룰렛</canvas>
+          <div class="ptr"></div>
+        </div>
+        <div class="r-result" id="r-result"></div>
+        <button class="btn-spin" id="btn-spin" disabled>룰렛 돌리기</button>
+        <button class="btn-see-rest" id="btn-see-rest" onclick="switchView('rest','left')">이 음식점 보러 가기 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 음식 선택 ── -->
+  <div id="v-select" style="display:none;flex-direction:column;flex:1;overflow:hidden;">
+    <div class="nav-hdr">
+      <button class="nav-back" onclick="cancelVote()"><i class="ti ti-chevron-left" aria-hidden="true"></i>메인</button>
+      <div class="nav-center" id="select-title">음식 선택</div>
+    </div>
+    <div class="sarea">
+      <div style="padding:12px 20px 10px;font-size:13px;color:#8E8E93;">먹고 싶은 음식을 골라주세요</div>
+      <div class="food-grid" id="food-grid"></div>
+      <div class="confirm-wrap">
+        <button class="btn-confirm" id="btn-confirm" onclick="confirmVote()" disabled>선택 완료</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 맛집 목록 ── -->
+  <div id="v-rest" style="display:none;flex-direction:column;flex:1;overflow:hidden;">
+    <div class="nav-hdr">
+      <button class="nav-back" onclick="switchView('main','right')"><i class="ti ti-chevron-left" aria-hidden="true"></i>메인</button>
+      <div class="nav-center" id="rest-nav-title">주변 맛집</div>
+    </div>
+    <div class="sarea">
+      <div style="padding:12px 20px 6px;font-size:13px;color:#8E8E93;" id="rest-sub"></div>
+      <div class="r-banner" id="r-banner">
+        <div class="rb-emoji" id="rb-emoji"></div>
+        <div class="rb-text"><div class="rb-label">룰렛 결과</div><div class="rb-name" id="rb-name"></div></div>
+        <span class="rb-reset" onclick="resetFilter()">전체 보기</span>
+      </div>
+      <div class="rest-list" id="rest-list"></div>
+    </div>
+  </div>
+
+  <!-- ── 지도 ── -->
+  <div id="v-map" style="display:none;flex-direction:column;flex:1;overflow:hidden;">
+    <div class="nav-hdr">
+      <button class="nav-back" onclick="switchView('rest','right')"><i class="ti ti-chevron-left" aria-hidden="true"></i>맛집</button>
+      <div class="nav-center" id="map-nav-title"></div>
+    </div>
+    <div class="sarea">
+      <div class="map-area"><svg id="map-svg" viewBox="0 0 320 188" style="width:100%;height:100%;"></svg></div>
+      <div class="map-info-card">
+        <div class="map-info-name" id="map-info-name"></div>
+        <div class="map-info-addr" id="map-info-addr"></div>
+        <div class="map-info-row">
+          <div class="map-pill"><i class="ti ti-star" aria-hidden="true"></i><span id="map-rating"></span></div>
+          <div class="map-pill"><i class="ti ti-walk" aria-hidden="true"></i><span id="map-dist"></span></div>
+          <div class="map-pill"><i class="ti ti-clock" aria-hidden="true"></i><span id="map-wait"></span></div>
+        </div>
+      </div>
+      <button class="btn-navi"><i class="ti ti-navigation" aria-hidden="true"></i>길 안내</button>
+    </div>
+  </div>
+
+</div></div></div>
+
+<script>
+const FOODS=[
+  {id:'korean',  name:'한식', sub:'국밥·비빔밥',  emoji:'🍲',color:'#FF6B35',cat:'한식'},
+  {id:'japanese',name:'일식', sub:'라멘·초밥',    emoji:'🍣',color:'#2a78d6',cat:'일식'},
+  {id:'chinese', name:'중식', sub:'짜장·짬뽕',    emoji:'🥟',color:'#1baf7a',cat:'중식'},
+  {id:'western', name:'양식', sub:'파스타·돈가스', emoji:'🍝',color:'#eda100',cat:'양식'},
+  {id:'snack',   name:'분식', sub:'떡볶이·김밥',  emoji:'🌮',color:'#4a3aa7',cat:'분식'},
+  {id:'burger',  name:'햄버거',sub:'버거·감자튀김',emoji:'🍔',color:'#e34948',cat:'햄버거'},
+];
+const RESTAURANTS=[
+  {name:'한솥도시락 역삼점',cat:'한식', emoji:'🍱',bg:'#FFF3E0',rating:4.2,dist:'3분',wait:'즉시', addr:'강남구 역삼동 123-4',lat:.45,lng:.3,rec:true},
+  {name:'진순이 설렁탕',   cat:'한식', emoji:'🍲',bg:'#FFF8F5',rating:4.6,dist:'5분',wait:'15분',addr:'강남구 역삼동 456-7',lat:.35,lng:.55},
+  {name:'뚝배기 가마솥',   cat:'한식', emoji:'🥘',bg:'#FFF0EB',rating:4.1,dist:'4분',wait:'5분', addr:'강남구 역삼동 234-5',lat:.5, lng:.65,rec:true},
+  {name:'후지야 라멘',     cat:'일식', emoji:'🍜',bg:'#E8F4FD',rating:4.4,dist:'7분',wait:'10분',addr:'강남구 역삼동 789-1',lat:.6, lng:.4},
+  {name:'스시료 역삼',     cat:'일식', emoji:'🍣',bg:'#EEF6FF',rating:4.7,dist:'9분',wait:'20분',addr:'강남구 역삼동 102-3',lat:.55,lng:.6},
+  {name:'짬뽕특구',        cat:'중식', emoji:'🥟',bg:'#E8F8F0',rating:4.3,dist:'6분',wait:'20분',addr:'강남구 역삼동 567-8',lat:.25,lng:.5},
+  {name:'왕돈가스 역삼',   cat:'양식', emoji:'🥩',bg:'#FFF8E0',rating:4.2,dist:'5분',wait:'10분',addr:'강남구 역삼동 910-1',lat:.4, lng:.35},
+  {name:'파파이스 역삼점', cat:'햄버거',emoji:'🍔',bg:'#FFE8E0',rating:4.1,dist:'3분',wait:'즉시', addr:'강남구 역삼동 321-4',lat:.38,lng:.28,rec:true},
+  {name:'맘스터치 역삼',   cat:'햄버거',emoji:'🍔',bg:'#FFF0E8',rating:4.3,dist:'6분',wait:'5분', addr:'강남구 역삼동 654-7',lat:.62,lng:.42},
+  {name:'종각 분식',       cat:'분식', emoji:'🌮',bg:'#F0EBFF',rating:4.0,dist:'8분',wait:'즉시', addr:'강남구 역삼동 345-6',lat:.3, lng:.7},
+];
+
+// 투표 집계: {foodId: count}
+let votes = {};
+let totalParticipants = 0;
+let currentPick = null; // 현재 선택 중인 음식
+let rouletteWinner = null;
+let spinning = false;
+let rAngle = 0;
+let currentView = 'main';
+
+const VIEWS = ['main','select','rest','map'];
+
+/* ── 화면 전환 ── */
+function switchView(to, dir){
+  if(!dir){
+    const fi=VIEWS.indexOf(currentView), ti=VIEWS.indexOf(to);
+    dir=ti>=fi?'left':'right';
+  }
+  VIEWS.forEach(id=>{
+    const el=document.getElementById('v-'+id);
+    el.style.display='none'; el.style.flexDirection='';
+  });
+  const el=document.getElementById('v-'+to);
+  el.style.display='flex'; el.style.flexDirection='column';
+  el.classList.remove('slide-left','slide-right');
+  void el.offsetWidth;
+  el.classList.add(dir==='left'?'slide-left':'slide-right');
+  currentView=to;
+  if(to==='rest') renderRestaurants();
+}
+
+/* ── 투표 시작 ── */
+function startVote(){
+  currentPick = null;
+  document.getElementById('select-title').textContent = `${totalParticipants+1}번째 참여`;
+  renderFoodGrid();
+  switchView('select','left');
+}
+
+function cancelVote(){
+  switchView('main','right');
+}
+
+/* ── 음식 선택 ── */
+function renderFoodGrid(){
+  document.getElementById('food-grid').innerHTML = FOODS.map(f=>`
+    <div class="food-card${currentPick===f.id?' selected':''}" onclick="pickFood('${f.id}')">
+      <div class="ck">✓</div>
+      <div class="f-emoji">${f.emoji}</div>
+      <div class="f-name">${f.name}</div>
+      <div class="f-sub">${f.sub}</div>
+    </div>`).join('');
+  document.getElementById('btn-confirm').disabled = !currentPick;
+}
+
+function pickFood(id){
+  currentPick = id;
+  renderFoodGrid();
+}
+
+function confirmVote(){
+  if(!currentPick) return;
+  votes[currentPick] = (votes[currentPick]||0) + 1;
+  totalParticipants++;
+  document.getElementById('p-num').textContent = totalParticipants;
+  renderStats();
+  drawRoulette();
+  document.getElementById('btn-spin').disabled = totalParticipants < 1;
+  switchView('main','right');
+}
+
+/* ── 초기화 ── */
+function resetAll(){
+  votes = {};
+  totalParticipants = 0;
+  rouletteWinner = null;
+  rAngle = 0;
+  document.getElementById('p-num').textContent = '0';
+  document.getElementById('r-result').textContent = '';
+  document.getElementById('btn-spin').disabled = true;
+  document.getElementById('btn-see-rest').classList.remove('show');
+  renderStats();
+  drawRoulette();
+}
+
+/* ── 통계 렌더 ── */
+function renderStats(){
+  const container = document.getElementById('stat-bars');
+  const subEl = document.getElementById('stat-hdr-sub');
+
+  if(totalParticipants === 0){
+    subEl.textContent = '아직 투표 없음';
+    container.innerHTML = '<div class="empty-stat">참여하기를 눌러 투표를 시작하세요</div>';
+    return;
+  }
+
+  subEl.textContent = `총 ${totalParticipants}명 참여`;
+
+  // 투표 있는 음식만, 득표수 내림차순
+  const voted = FOODS
+    .filter(f => votes[f.id] > 0)
+    .sort((a,b)=>(votes[b.id]||0)-(votes[a.id]||0));
+
+  const maxVotes = Math.max(...voted.map(f=>votes[f.id]||0), 1);
+
+  container.innerHTML = voted.map(f=>{
+    const n = votes[f.id]||0;
+    const barW = Math.round(n/maxVotes*100);
+    const pct = Math.round(n/totalParticipants*100);
+    return `<div class="stat-row">
+      <div class="s-emoji">${f.emoji}</div>
+      <div class="s-name">${f.name}</div>
+      <div class="s-track">
+        <div class="s-fill" style="width:${barW}%;background:${f.color};">
+          ${n>0?`<span>${n}명</span>`:''}
+        </div>
+      </div>
+      <div class="s-n">${pct}%</div>
+    </div>`;
+  }).join('');
+}
+
+/* ── 룰렛 ── */
+function drawRoulette(){
+  const cv=document.getElementById('roulette');
+  const ctx=cv.getContext('2d');
+  const cx=90,cy=90,r=86;
+  ctx.clearRect(0,0,180,180);
+
+  // 투표된 음식 목록 (득표수 가중치 없이 종류만)
+  const list = FOODS.filter(f=>(votes[f.id]||0)>0);
+
+  if(!list.length){
+    ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fillStyle='#EFEFEF';ctx.fill();
+    ctx.fillStyle='#C7C7CC';ctx.font='12px -apple-system,sans-serif';ctx.textAlign='center';
+    ctx.fillText('투표 후 활성화돼요',cx,cy+4);
+    return;
+  }
+
+  if(list.length===1){
+    ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fillStyle=list[0].color;ctx.fill();
+    ctx.fillStyle='#fff';ctx.textAlign='center';
+    ctx.font='bold 28px -apple-system,sans-serif';ctx.fillText(list[0].emoji,cx,cy+2);
+    ctx.font='bold 13px -apple-system,sans-serif';ctx.fillText(list[0].name,cx,cy+20);
+  } else {
+    const arc=(Math.PI*2)/list.length;
+    list.forEach((f,i)=>{
+      const s=rAngle+i*arc-Math.PI/2,e=s+arc;
+      ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,e);ctx.fillStyle=f.color;ctx.fill();
+      ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+      ctx.save();ctx.translate(cx,cy);ctx.rotate(s+arc/2);ctx.textAlign='right';ctx.fillStyle='#fff';
+      const sm=list.length>4;
+      ctx.font=`bold ${sm?10:12}px -apple-system,sans-serif`;ctx.fillText(f.emoji,r-5,4);
+      if(!sm){ctx.font=`bold 10px -apple-system,sans-serif`;ctx.fillText(f.name,r-22,4);}
+      ctx.restore();
+    });
+  }
+  ctx.beginPath();ctx.arc(cx,cy,12,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
+  ctx.strokeStyle='#E5E5EA';ctx.lineWidth=2;ctx.stroke();
+}
+
+document.getElementById('btn-spin').addEventListener('click',()=>{
+  const list=FOODS.filter(f=>(votes[f.id]||0)>0);
+  if(!list.length||spinning)return;
+  spinning=true;
+  document.getElementById('btn-spin').disabled=true;
+  document.getElementById('btn-see-rest').classList.remove('show');
+  document.getElementById('r-result').textContent='돌아가는 중...';
+  const totalRot=(Math.PI*2)*(6+Math.random()*6);
+  const dur=3600,t0=performance.now(),a0=rAngle;
+  (function tick(now){
+    const p=Math.min((now-t0)/dur,1),ease=1-Math.pow(1-p,4);
+    rAngle=a0+totalRot*ease;
+    drawRoulette();
+    if(p<1){requestAnimationFrame(tick);return;}
+    const arc=(Math.PI*2)/list.length;
+    const norm=((rAngle%(Math.PI*2))+Math.PI*2)%(Math.PI*2);
+    const idx=Math.floor(((Math.PI*2-norm+Math.PI/2)%(Math.PI*2))/arc)%list.length;
+    rouletteWinner=list[idx];
+    document.getElementById('r-result').textContent=rouletteWinner.emoji+' '+rouletteWinner.name+' 당첨!';
+    const btn=document.getElementById('btn-see-rest');
+    btn.textContent=rouletteWinner.emoji+' '+rouletteWinner.name+' 맛집 보러 가기 →';
+    btn.classList.add('show');
+    spinning=false;
+    document.getElementById('btn-spin').disabled=false;
+  })(performance.now());
+});
+
+/* ── 맛집 ── */
+function resetFilter(){rouletteWinner=null;renderRestaurants();}
+function renderRestaurants(){
+  const banner=document.getElementById('r-banner');
+  const list=rouletteWinner?RESTAURANTS.filter(r=>r.cat===rouletteWinner.cat):RESTAURANTS;
+  const navTitle=document.getElementById('rest-nav-title');
+  if(rouletteWinner){
+    banner.classList.add('show');
+    document.getElementById('rb-emoji').textContent=rouletteWinner.emoji;
+    document.getElementById('rb-name').textContent=rouletteWinner.name+' 음식점만 보는 중';
+    navTitle.textContent=rouletteWinner.name+' 맛집';
+    document.getElementById('rest-sub').textContent=`${list.length}곳 · 룰렛 결과 필터`;
+  } else {
+    banner.classList.remove('show');
+    navTitle.textContent='주변 맛집';
+    document.getElementById('rest-sub').textContent=`${RESTAURANTS.length}곳 · 도보 10분 이내`;
+  }
+  document.getElementById('rest-list').innerHTML=list.length===0
+    ?`<div style="text-align:center;padding:30px;color:#8E8E93;font-size:13px;">해당 음식점이 없어요<br><span style="color:#FF6B35;cursor:pointer" onclick="resetFilter()">전체 보기</span></div>`
+    :list.map(r=>`<div class="rest-card" onclick="openMap(${RESTAURANTS.indexOf(r)})">
+      <div class="rest-icon" style="background:${r.bg};">${r.emoji}</div>
+      <div class="rest-info">
+        <div style="display:flex;align-items:center;margin-bottom:2px;">
+          <span class="rest-name">${r.name}</span>
+          ${r.rec?'<span class="rec-badge">추천</span>':''}
+        </div>
+        <div class="rest-cat">${r.cat}</div>
+        <div class="rest-meta">
+          <span class="rest-rating">★ ${r.rating}</span>
+          <span class="rest-dist">${r.dist}</span>
+          <span class="rest-wait">대기 ${r.wait}</span>
+        </div>
+      </div>
+      <i class="ti ti-chevron-right" style="font-size:14px;color:#C7C7CC;" aria-hidden="true"></i>
+    </div>`).join('');
+}
+
+/* ── 지도 ── */
+function openMap(idx){
+  const r=RESTAURANTS[idx];
+  document.getElementById('map-nav-title').textContent=r.name;
+  document.getElementById('map-info-name').textContent=r.name;
+  document.getElementById('map-info-addr').textContent=r.addr;
+  document.getElementById('map-rating').textContent='★ '+r.rating;
+  document.getElementById('map-dist').textContent=r.dist;
+  document.getElementById('map-wait').textContent='대기 '+r.wait;
+  const svg=document.getElementById('map-svg'),W=320,H=188;
+  const roads=[{x1:0,y1:66,x2:320,y2:75,w:12},{x1:0,y1:122,x2:320,y2:117,w:10},{x1:78,y1:0,x2:87,y2:188,w:10},{x1:174,y1:0,x2:169,y2:188,w:10},{x1:244,y1:0,x2:248,y2:188,w:10}];
+  const blds=[{x:12,y:12,w:58,h:46},{x:96,y:8,w:68,h:50},{x:188,y:7,w:44,h:52},{x:256,y:10,w:58,h:48},{x:8,y:84,w:62,h:30},{x:96,y:82,w:68,h:28},{x:188,y:82,w:46,h:28},{x:256,y:83,w:58,h:28},{x:8,y:130,w:62,h:52},{x:96,y:128,w:68,h:54},{x:188,y:130,w:46,h:52},{x:256,y:130,w:58,h:52}];
+  const px=Math.round(r.lng*W),py=Math.round(r.lat*H);
+  svg.innerHTML=`<rect width="320" height="188" fill="#E8F4FD"/>
+    ${roads.map(rd=>`<line x1="${rd.x1}" y1="${rd.y1}" x2="${rd.x2}" y2="${rd.y2}" stroke="#fff" stroke-width="${rd.w}"/>`).join('')}
+    ${blds.map(b=>`<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" rx="3" fill="#C8D8E8"/>`).join('')}
+    <circle cx="${W/2}" cy="${H/2}" r="6" fill="#34C759"/><circle cx="${W/2}" cy="${H/2}" r="3" fill="#fff"/>
+    <circle cx="${px}" cy="${py}" r="13" fill="#FF6B35" opacity=".25"/>
+    <circle cx="${px}" cy="${py}" r="8" fill="#FF6B35"/><circle cx="${px}" cy="${py}" r="4" fill="#fff"/>
+    <text x="${px}" y="${py-17}" text-anchor="middle" font-size="11" font-weight="600" fill="#FF6B35" font-family="-apple-system,sans-serif">${r.name.split(' ')[0]}</text>`;
+  switchView('map','left');
+}
+
+// INIT
+const mainEl=document.getElementById('v-main');
+mainEl.style.display='flex'; mainEl.style.flexDirection='column';
+drawRoulette();
+</script>
