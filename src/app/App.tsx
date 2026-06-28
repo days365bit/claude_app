@@ -284,14 +284,7 @@ export default function App() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", width: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "#E5E5EA", fontFamily: "-apple-system,'SF Pro Text',Helvetica,sans-serif", padding: "20px 0" }}>
-
-      {/* iPhone frame */}
-      <div style={{ width: 320, background: "#000", borderRadius: 48, padding: 3, boxShadow: "0 40px 80px rgba(0,0,0,0.5), 0 0 0 0.5px rgba(255,255,255,0.1)" }}>
-        <div style={{ background: "#F2F2F7", borderRadius: 46, overflow: "hidden", minHeight: 700, display: "flex", flexDirection: "column", position: "relative" }}>
-
-          {/* Dynamic Island */}
-          <div style={{ position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)", width: 88, height: 28, background: "#000", borderRadius: 20, zIndex: 99 }} />
+    <div style={{ minHeight: "100vh", width: "100%", display: "flex", flexDirection: "column", background: "#F2F2F7", fontFamily: "-apple-system,'SF Pro Text',Helvetica,sans-serif" }}>
 
           <StatusBar />
 
@@ -558,9 +551,6 @@ export default function App() {
               </motion.div>
             </AnimatePresence>
           </div>
-        </div>
-      </div>
-
       <style>{`.hide-scrollbar::-webkit-scrollbar{display:none}.hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none}`}</style>
     </div>
   );
